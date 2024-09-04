@@ -2,10 +2,7 @@ package string;
 
 import javafx.util.Pair;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @ Author : kn
@@ -92,29 +89,29 @@ public class FindStr {
 
     public static List<Integer> findAnagrams2(String s, String p) {
         List<Integer> result = new ArrayList<>();
-        //异构词排序
-        List<Character> word = new ArrayList<>();
+        //异构词统计出现次数
+        int[] word = new int[26];
         for (int i = 0; i < p.length(); i++) {
-            word.add(p.charAt(i));
+            word[p.charAt(i) - 'a']++;
         }
 
-        List<Character> child = new ArrayList<>();
+        //滑动窗口宽度固定，第一次读取p.length长度的字符，后面右指针移动，每次添加一个元素，同时移除上一个窗口的末尾元素
+        int[] match = new int[26];
         for (int i = 0; i < s.length(); i++) {
-            //窗口宽度固定
-            int right = i + p.length();
-            if (p.length() > s.length() - i) {
-                break;
+            int right = 0;
+            if (i>0){
+                right=i+p.length()-1;
+                match[s.charAt(i-1)-'a']--;
             }
 
-            child = new ArrayList<>(word);
-            for (int j = i; j < right; j++) {
-                //清除不成功,不包含元素，退出循环
-                if (!child.remove((Character) s.charAt(j))) {
-                    break;
-                }
-                ;
+            //右指针小于窗口边界，字符串边界
+            while (right<i+p.length()&&right < s.length()) {
+                match[s.charAt(right)-'a']++;
+                right++;
             }
-            if (child.isEmpty()) {
+
+            //比较数组
+            if (Arrays.equals(word,match)){
                 result.add(i);
             }
         }
@@ -123,6 +120,6 @@ public class FindStr {
 
     public static void main(String[] args) {
         String s = "cbaebabacd", p = "abc";
-        System.out.println(findAnagrams(s, p));
+        System.out.println(findAnagrams2(s, p));
     }
 }
