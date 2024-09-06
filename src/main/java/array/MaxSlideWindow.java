@@ -45,7 +45,7 @@ public class MaxSlideWindow {
                 }
                 r++;
             }
-            result[i] = maxHeap.peek();
+            //result[i] = maxHeap.peek();
         }
         return result;
     }
