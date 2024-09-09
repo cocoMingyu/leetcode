@@ -19,7 +19,7 @@ import java.util.Arrays;
  */
 public class RotatePic {
     public static void test(int[][] matrix){
-
+        int a=0;
     }
 
     public static void main(String[] args) {
