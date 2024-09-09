@@ -19,7 +19,26 @@ import java.util.Arrays;
  */
 public class RotatePic {
     public static void test(int[][] matrix){
-        int a=0;
+        int n=matrix.length;
+        //根据规律总计公式 f(x)(y)=f(y)(n-x-1)
+        //每个数字需要旋转1次，才能到达正确位置,共有4角，需要置换4次才能全部旋转成功
+        for (int i = 0; i < n/2; i++) {
+            for (int j = 0; j < (n+1)/2; j++) {
+                //第一个数
+                int first = matrix[i][j];
+                //第二个数
+                int second=matrix[j][n-i-1];
+                //第三个数
+                int three=matrix[n-i-1][n-j-1];
+                //第四个数
+                int four=matrix[n-j-1][i];
+                //第四个数=three
+                matrix[n-j-1][i]=three;
+                matrix[n-i-1][n-j-1]=second;
+                matrix[j][n-i-1]=first;
+                matrix[i][j]=four;
+            }
+        }
     }
 
     public static void main(String[] args) {
