@@ -1,8 +1,6 @@
 package array;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @ Author : kn
@@ -20,42 +18,36 @@ import java.util.Map;
  */
 public class MergeArea {
     public static int[][] merge(int[][] intervals) {
-        int[][] res = new int[intervals.length][];
+        if (intervals.length<1){
+            return new int[0][];
+        }
         //原始数组排序
+        Arrays.sort(intervals, Comparator.comparingInt(v -> v[0]));
+        List<int[]> res = new ArrayList<>();
         for (int i = 0; i < intervals.length; i++) {
-            for (int j = 0; j < intervals.length-i-1; j++) {
-                if (intervals[j][0] > intervals[j + 1][0]){
-                    int[] temp=intervals[j];
-                    intervals[j]=intervals[j+1];
-                    intervals[j+1]=temp;
-                }
+            int left=intervals[i][0];
+            int right=intervals[i][1];
+            //区间的最大值小于下一个区间的最小值，表示两者不重叠，添加区间。i=0 初始化添加区间
+            if(i==0||res.get(res.size()-1)[1]<left){
+                res.add(new int[]{left,right});
+            }else {
+                //重叠区间,更新区间右边界
+                res.get(res.size()-1)[1]=Math.max(right,res.get(res.size()-1)[1]);
             }
         }
-        int[] range = new int[2];
-        for (int i = 0; i < intervals.length; i++) {
-            boolean init = range[0] == 0 && range[1] == 0;
-            if (i + 1 < intervals.length && intervals[i][1] >= intervals[i + 1][0]) {
-                //i区间第1个元素>=第2个区间第0个元素
-                range[0] =init?intervals[i][0]:Math.min(intervals[i][0],range[0]);
-                range[1] = Math.max(intervals[i][1], intervals[i + 1][1]);
-            } else {
-                if (init) {
-                    res[i] = intervals[i];
-                } else {
-                    res[i] = range;
-                }
-                range = new int[2];
-            }
-        }
-        return Arrays.stream(res).filter(x ->x!=null).toArray(int[][]::new);
+        return res.toArray(new int[0][]);
     }
 
     public static void main(String[] args) {
         int[][] intervals = {{1,4},{0,2},{3,5}};
         int[][] intervals2 = {{1,3},{2,6},{8,10},{15,18}};
         int[][] intervals3 = {{4,5},{1,4},{0,1}};
-        int[][] intervals4 = {{2,3},{4,5},{6,7},{8,9},{1,10}};
-        int[][] merge = merge(intervals4);
-        System.out.println(Arrays.toString(merge));
+        int[][] intervals4 = {{1,10},{2,3},{4,5},{6,7},{8,9}};
+
+        System.out.println(Arrays.deepToString(merge(intervals)));
+        System.out.println(Arrays.deepToString(merge(intervals2)));
+        System.out.println(Arrays.deepToString(merge(intervals3)));
+        System.out.println(Arrays.deepToString(merge(intervals4)));
+
     }
 }
