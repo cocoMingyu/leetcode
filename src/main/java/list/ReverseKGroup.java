@@ -60,37 +60,25 @@ public class ReverseKGroup {
     }
 
     public static ListNode reverseKGroup2(ListNode head, int k) {
-        ListNode node = new ListNode(1);
         int count=0;
-
-        ListNode pre=node.next;
+        ListNode node=new ListNode(1);
+        ListNode pre=null;
+        ListNode cur=head;
         while (head!=null){
-            pre.next=head;
+            //反转pre节点
+            if (count==k){
+                count=0;
+                pre=null;
+            }else {
+                cur.next=pre;
+                pre=cur;
+                cur=head;
+            }
             head=head.next;
             count++;
-            if (count==k){
-                node.next=reverseNode(pre);
-                count=0;
-            }
+
         }
         return node.next;
-    }
-
-    public static ListNode reverseNode(ListNode node){
-        ListNode pre=null;
-        ListNode head=null;
-        while (node.next!=null){
-            if (pre==null){
-                pre=node;
-                head=node;
-            }else {
-
-            }
-
-            node=node.next;
-
-        }
-        return head;
     }
 
     public static void main(String[] args) {
@@ -106,8 +94,8 @@ public class ReverseKGroup {
         node3.next = node4;
         node4.next = node5;
         node5.next = node6;
-        //node6.next = node7;
-        ListNode node = reverseKGroup(node1,2);
+        node6.next = node7;
+        ListNode node = reverseKGroup2(node1,3);
         while (node != null) {
             System.out.println(node.val);
             node = node.next;
