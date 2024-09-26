@@ -23,20 +23,44 @@ package tree;
  * @ Date : 2024/9/23 15:17
  */
 public class DiameterOfBinaryTree {
-
+    int length;
     /**
-     * 找到两条最长的树，以及两个树的根节点
+     * 找到每个节点两条最长的树，节点相加-1既是长度
      * @param root
      * @return
      */
     public int diameterOfBinaryTree(TreeNode root) {
-        int leftLength=0;
-        int rightLength=0;
-
-        return 0;
+        length=1;
+        deep(root);
+        return length-1;
     }
 
-    public void sumLength(TreeNode left,TreeNode right,int leftLength,int rightLength){
-        if
+    public int deep(TreeNode root){
+        //空节点返回0
+        if(root == null){
+            return 0;
+        }
+        //当前节点的左右树深度
+        int ll = deep(root.left);
+        int rl = deep(root.right);
+        //当前节点所经过的节点数，需要加上根节点
+        length = Math.max(ll + rl+1,length);
+        //返回节点最大深度
+        return Math.max(ll,rl)+1 ;
+    }
+
+    public static void main(String[] args) {
+        TreeNode root = new TreeNode(5);
+        root.left = new TreeNode(4);
+        root.right = new TreeNode(4);
+        root.right.left = new TreeNode(1);
+        root.right.left.left = new TreeNode(11);
+        root.right.left.left.left = new TreeNode(111);
+        root.right.right = new TreeNode(3);
+        root.right.right.left = new TreeNode(33);
+        root.right.right.left.right = new TreeNode(333);
+        root.right.right.left.right.right = new TreeNode(3333);
+
+        System.out.println(new DiameterOfBinaryTree().diameterOfBinaryTree(root));
     }
 }
