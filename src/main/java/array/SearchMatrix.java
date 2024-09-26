@@ -51,5 +51,9 @@ public class SearchMatrix {
         int[][] matrix = {{1}};
         int[][] matrix2 = {{1, 1}};
         System.out.println(test(matrix2, 2));
+
+        StringBuilder sb=new StringBuilder();
+       
+        sb.reverse().toString().equals(sb.toString());
     }
 }
