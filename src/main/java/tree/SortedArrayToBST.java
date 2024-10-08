@@ -23,54 +23,25 @@ package tree;
  * @ Date : 2024/9/27 10:03
  */
 public class SortedArrayToBST {
-    int[] arr;
-    int left;
-    int right;
     public TreeNode sortedArrayToBST(int[] nums) {
-        arr = nums;
-        int length = nums.length;
-        //确定根节点，为数组中间元素
-        TreeNode root = new TreeNode(nums[length / 2]);
-         left = length / 2 - 1;
-         right = length / 2 + 1;
-        if (left>=0){
-            TreeNode l = new TreeNode(arr[left--]);
-            root.left=l;
-            buildLeftTree(l);
+        return buildTree(0,nums.length-1,nums);
+    }
+
+    public TreeNode buildTree(int left, int right, int[] nums){
+        // 递归终止条件，左边界超过右边界
+        if (left > right){
+            return null;
         }
-        if (right<length){
-            TreeNode r = new TreeNode(arr[right++]);
-            root.right=r;
-            buildRightTree(r);
-        }
+        //选取中间节点
+        int mid=(left+right)/2;
+        TreeNode root=new TreeNode(nums[mid]);
+        root.left=buildTree(left,mid-1,nums);
+        root.right=buildTree(mid+1,right,nums);
         return root;
     }
 
-    public void buildLeftTree(TreeNode root){
-        if (left<0){
-            return;
-        }
-        root.left=new TreeNode(arr[left--]);
-        if (left<0){
-            return;
-        }
-        root.right=new TreeNode(arr[left--]);
-        buildLeftTree(root.left);
-        buildLeftTree(root.right);
-    }
 
-    public void buildRightTree(TreeNode root){
-        if (right>=arr.length){
-            return;
-        }
-        root.left=new TreeNode(arr[right++]);
-        if (right>=arr.length){
-            return;
-        }
-        root.right=new TreeNode(arr[right++]);
-        buildRightTree(root.left);
-        buildRightTree(root.right);
-    }
+
 
     public static void main(String[] args) {
         int[] nums = {-10,-9,-8,-7,-3,0,5,9,11,12,14};

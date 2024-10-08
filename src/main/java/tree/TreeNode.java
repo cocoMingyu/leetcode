@@ -22,4 +22,10 @@ public class TreeNode {
         this.left = left;
         this.right = right;
     }
+
+    public static void main(String[] args) {
+        int i1 = "1617cc00480d552533be5768468d1ed4".hashCode() % 30 + 1;
+        System.out.println(i1);
+
+    }
 }
