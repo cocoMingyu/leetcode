@@ -31,25 +31,23 @@ public class IsValidBST {
         if (root==null){
             return false;
         }
-        return judge(root, root.val);
+        return judge(root, Long.MIN_VALUE, Long.MAX_VALUE);
     }
 
-    public boolean judge(TreeNode root,int beforeNodeVal){
+    public boolean judge(TreeNode root,Long min,Long max){
         if (root==null){
             return true;
         }
-        //左子树节点值大于当前节点值，右子树节点值小于当前节点值 不符合二叉搜索树
-        if ((root.left!=null&&(root.left.val>=root.val||root.left.val>=v))||
-                (root.right!=null&&(root.right.val<=root.val||root.right.val<=v))){
+        //节点在一个区间内，左树最大值动态变化，右树最小值动态变化
+        if (root.val<=min||root.val>=max){
             return false;
         }
-        return judge(root.left)&&judge(root.right);
+        return judge(root.left, min, (long)root.val)&&judge(root.right,(long)root.val,max);
     }
 
     public static void main(String[] args) {
-        TreeNode root = new TreeNode(5);
-        root.left = new TreeNode(4);
-        root.right = new TreeNode(6);
+        TreeNode root = new TreeNode(2147483647);
+
         //[5,4,6,null,null,3,7]
         System.out.println(new IsValidBST().isValidBST(root));
     }
