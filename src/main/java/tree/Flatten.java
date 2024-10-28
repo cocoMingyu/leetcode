@@ -52,19 +52,25 @@ public class Flatten {
     }
 
     public void flatten2(TreeNode root) {
-        TreeNode copy = new TreeNode(root.val);
-        recursion(root, copy);
-        System.out.println();
-    }
-
-    public void recursion(TreeNode root, TreeNode copy) {
-        if (root == null) {
-            return;
+        while (root!=null){
+            //如果左节点为空，右节点替换左节点
+            if (root.left==null){
+                root=root.right;
+            }else {
+                TreeNode pre = root.left;
+                //找到当前左子树的最右节点
+                while (pre.right!=null){
+                    pre=pre.right;
+                }
+                //将根节点右子树挂到最右节点
+                pre.right=root.right;
+                //将根节点右子树换为左子树，左子树置空
+                root.right=root.left;
+                root.left=null;
+                //替换下一节点
+                root=root.right;
+            }
         }
-        copy.right = new TreeNode(root.val);
-        copy=copy.right;
-        recursion(root.left, copy);
-        recursion(root.right, copy);
     }
 
     public static void main(String[] args) {
