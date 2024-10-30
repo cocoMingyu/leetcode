@@ -29,20 +29,26 @@ public class PathSum {
     int result = 0;
 
     public int pathSum(TreeNode root, int targetSum) {
-        sum(root, targetSum, 0);
+        if (root==null){
+            return result;
+        }
+        sum(root, (long) targetSum,0L);
+        //每个节点都要遍历，重新调用pathsum
+        pathSum(root.left, targetSum);
+        pathSum(root.right, targetSum);
         return result;
     }
 
-    public void sum(TreeNode root, int target, int sum) {
+    public void sum(TreeNode root, Long target,Long sum) {
         if (root == null) {
             return;
         }
-        int val = root.val;
-        if (val + sum == target) {
-            result = result + 1;
+        long val = (long)root.val;
+        if (val+sum  == target) {
+            result ++;
         }
-        sum(root.left, target, sum + val);
-        sum(root.right, target, sum + val);
+        sum(root.left, target, sum+val);
+        sum(root.right, target,sum+val);
 
     }
 
@@ -50,12 +56,14 @@ public class PathSum {
         TreeNode treeNode = new TreeNode(0);
         treeNode.left = new TreeNode(2);
         treeNode.right = new TreeNode(2);
+        TreeNode treeNode2 = new TreeNode(1000000000);
+        treeNode2.left = new TreeNode(1000000000);
+        treeNode2.left.left = new TreeNode(294967296);
+        treeNode2.left.left.left = new TreeNode(1000000000);
+        treeNode2.left.left.left.left = new TreeNode(1000000000);
+        treeNode2.left.left.left.left.left = new TreeNode(1000000000);
 
-        TreeNode treeNode2 = new TreeNode(1);
-        treeNode2.right = new TreeNode(2);
-        treeNode2.right.right = new TreeNode(3);
 
-
-        System.out.println(new PathSum().pathSum(treeNode2, 3));
+        System.out.println(new PathSum().pathSum(treeNode2, 0));
     }
 }
