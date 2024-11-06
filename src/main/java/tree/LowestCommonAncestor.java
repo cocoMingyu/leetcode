@@ -39,12 +39,13 @@ public class LowestCommonAncestor {
         //两个路径的最后一个相同节点就是最近公共祖先
         findPath(root,p,pL);
         findPath(root,q,qL);
-        for (int i = 0; i < pL.size() && i < qL.size(); i++) {
-            if (pL.get(i).val!=qL.get(i).val){
-                return pL.get(i-1);
+        int min = Math.min(pL.size(), qL.size());
+        for (int i = 0; i<min; i++) {
+            if (pL.get(pL.size()-1-i).val!=qL.get(qL.size()-1-i).val){
+                return pL.get(pL.size()-i);
             }
         }
-        return null;
+        return pL.get(pL.size()-min);
     }
 
     public boolean findPath(TreeNode root, TreeNode tar,List<TreeNode> list){
@@ -61,5 +62,29 @@ public class LowestCommonAncestor {
             list.add(root);
             return true;
         }
+    }
+
+
+    //[3,5,1,6,2,0,8,null,null,7,4] 5,4
+    //[1,2]  1,2
+
+    public static void main(String[] args) {
+        TreeNode treeNode=new TreeNode(3);
+        treeNode.left = new TreeNode(5);
+        treeNode.right = new TreeNode(1);
+        treeNode.left.left = new TreeNode(6);
+        treeNode.left.right = new TreeNode(2);
+        treeNode.right.left = new TreeNode(0);
+        treeNode.right.right = new TreeNode(8);
+        treeNode.left.right.left = new TreeNode(7);
+        treeNode.left.right.right = new TreeNode(4);
+
+        TreeNode treeNode2 = new TreeNode(10);
+        treeNode2.left = new TreeNode(20);
+
+
+        TreeNode res = new LowestCommonAncestor().lowestCommonAncestor(treeNode2, new TreeNode(10), new TreeNode(20));
+        TreeNode res2 = new LowestCommonAncestor().lowestCommonAncestor(treeNode, new TreeNode(5), new TreeNode(4));
+        System.out.println();
     }
 }
