@@ -1,5 +1,7 @@
 package tree;
 
+import javafx.util.Pair;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +11,7 @@ import java.util.List;
  * 中等
  * 给定一个二叉树, 找到该树中两个指定节点的最近公共祖先。
  * 百度百科中最近公共祖先的定义为：“对于有根树 T 的两个节点 p、q，最近公共祖先表示为一个节点 x，满足 x 是 p、q 的祖先且 x 的深度尽可能大（一个节点也可以是它自己的祖先）。”
-
+ * <p>
  * 示例 1：
  * 输入：root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 1
  * 输出：3
@@ -21,7 +23,7 @@ import java.util.List;
  * 示例 3：
  * 输入：root = [1,2], p = 1, q = 2
  * 输出：1
- *
+ * <p>
  * 提示：
  * 树中节点数目在范围 [2, 105] 内。
  * -109 <= Node.val <= 109
@@ -31,37 +33,57 @@ import java.util.List;
  * @ Date : 2024/10/31 15:29
  */
 public class LowestCommonAncestor {
+    TreeNode common;
 
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        List<TreeNode> pL=new ArrayList<>();
-        List<TreeNode> qL=new ArrayList<>();
+        List<TreeNode> pL = new ArrayList<>();
+        List<TreeNode> qL = new ArrayList<>();
         //先找到包含两个节点的路径
         //两个路径的最后一个相同节点就是最近公共祖先
-        findPath(root,p,pL);
-        findPath(root,q,qL);
+        findPath(root, p, pL);
+        findPath(root, q, qL);
         int min = Math.min(pL.size(), qL.size());
-        for (int i = 0; i<min; i++) {
-            if (pL.get(pL.size()-1-i).val!=qL.get(qL.size()-1-i).val){
-                return pL.get(pL.size()-i);
+        for (int i = 0; i < min; i++) {
+            if (pL.get(pL.size() - 1 - i).val != qL.get(qL.size() - 1 - i).val) {
+                return pL.get(pL.size() - i);
             }
         }
-        return pL.get(pL.size()-min);
+        return pL.get(pL.size() - min);
     }
 
-    public boolean findPath(TreeNode root, TreeNode tar,List<TreeNode> list){
-        if (root==null){
+    public boolean findPath(TreeNode root, TreeNode tar, List<TreeNode> list) {
+        if (root == null) {
             return false;
         }
-        if (root.val!= tar.val){
+        if (root.val != tar.val) {
             boolean b = findPath(root.left, tar, list) || findPath(root.right, tar, list);
-            if (b){
+            if (b) {
                 list.add(root);
             }
             return b;
-        }else {
+        } else {
             list.add(root);
             return true;
         }
+    }
+
+    public TreeNode lowestCommonAncestor2(TreeNode root, TreeNode p, TreeNode q) {
+        findPath2(root, p, q);
+        return common;
+    }
+
+    public Boolean findPath2(TreeNode root, TreeNode p, TreeNode q) {
+        if (root == null) {
+            return false;
+        }
+        boolean eq = root.val == p.val || root.val == q.val;
+        Boolean left = findPath2(root.left, p, q);
+        Boolean right = findPath2(root.right, p, q);
+        if ((eq && left) || (eq && right) || (left && right)) {
+            common = root;
+            return false;
+        }
+        return eq || left || right;
     }
 
 
@@ -69,7 +91,7 @@ public class LowestCommonAncestor {
     //[1,2]  1,2
 
     public static void main(String[] args) {
-        TreeNode treeNode=new TreeNode(3);
+        TreeNode treeNode = new TreeNode(3);
         treeNode.left = new TreeNode(5);
         treeNode.right = new TreeNode(1);
         treeNode.left.left = new TreeNode(6);
@@ -83,8 +105,8 @@ public class LowestCommonAncestor {
         treeNode2.left = new TreeNode(20);
 
 
-        TreeNode res = new LowestCommonAncestor().lowestCommonAncestor(treeNode2, new TreeNode(10), new TreeNode(20));
-        TreeNode res2 = new LowestCommonAncestor().lowestCommonAncestor(treeNode, new TreeNode(5), new TreeNode(4));
+        //TreeNode res = new LowestCommonAncestor().lowestCommonAncestor2(treeNode2, new TreeNode(10), new TreeNode(20));
+        TreeNode res2 = new LowestCommonAncestor().lowestCommonAncestor2(treeNode, new TreeNode(5), new TreeNode(4));
         System.out.println();
     }
 }
