@@ -77,6 +77,7 @@ public class NumIsLands {
         }
     }
 
+
     public static void main(String[] args) {
         char[][] grid = new char[][]{
                 {'1','1','0','0','0'},
