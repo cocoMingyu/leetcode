@@ -1,5 +1,7 @@
 package graph;
 
+import java.util.*;
+
 /**
  * @ Author : kn
  * @ Description :207. 课程表
@@ -36,6 +38,53 @@ package graph;
  */
 public class CanFinish {
     public boolean canFinish(int numCourses, int[][] prerequisites) {
+        //邻接表
+        List<List<Integer>> list = new ArrayList<>(numCourses);
+        for (int i = 0; i < numCourses; i++) {
+            list.add(new ArrayList<>());
+        }
 
+        //入度数组
+        int[] inDegree = new int[numCourses];
+        for (int i = 0; i < prerequisites.length; i++) {
+            int[] prerequisite = prerequisites[i];
+            //对应索引位置，邻接表添加元素
+            list.get(prerequisite[1]).add(prerequisite[0]);
+            //对应索引位置 入度数+1
+            inDegree[prerequisite[0]]++;
+        }
+        //入度队列，存放入度为0的课程,即没有依赖课程
+        Queue<Integer> queue = new LinkedList<>();
+        for (int i = 0; i < numCourses; i++) {
+            if (inDegree[i]==0){
+                queue.add(i);
+            }
+        }
+
+        //入度数=0的课程数量，即完成课程数量
+        int count=0;
+        while (!queue.isEmpty()){
+            Integer poll = queue.poll();
+            count++;
+            for (Integer num : list.get(poll)) {
+                //入度-1
+                --inDegree[num];
+                //入度为0，入队
+                if (inDegree[num]==0){
+                    queue.add(num);
+                }
+            }
+        }
+        //完成课程数量=课程总数，返回true
+        return count==numCourses;
+    }
+
+    public static void main(String[] args) {
+        int[][] prerequisites = {{0,1}};
+        int numCourses = 2;
+        CanFinish canFinish = new CanFinish();
+
+        boolean b = canFinish.canFinish(numCourses, prerequisites);
+        System.out.println(b);
     }
 }
