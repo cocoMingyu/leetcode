@@ -37,8 +37,8 @@ public class Exists {
         for (int k = 0; k < board.length; k++) {
             for (int j = 0; j < board[k].length; j++) {
                 //找到匹配的首字母
-                if (board[k][j] == word.charAt(word.length()-1)) {
-                    boolean dfs = dfs(board, word, k, j, 0,word.length()-1);
+                if (board[k][j] == word.charAt(word.length() - 1)) {
+                    boolean dfs = dfs(board, word, k, j, 0, word.length() - 1);
                     if (dfs)
                         return true;
                 }
@@ -48,26 +48,24 @@ public class Exists {
         return false;
     }
 
-    public boolean dfs(char[][] board, String word, int row, int col,int deep,int end) {
+    public boolean dfs(char[][] board, String word, int row, int col, int deep, int end) {
         //不能超过边界；在上一个字母附近寻找，深度不能超过2
         if (row >= 0 && row < board.length && col >= 0 && col < board[row].length
-                && deep <= word.length()-end+1) {
-            if (board[row][col] == word.charAt(end)) {
-                if (end ==0){
-                    return true;
-                }
-                //找到目标字符，则返回true，并将当前节点置空，防止重复
-                char c = board[row][col];
-                board[row][col] = ' ';
-                boolean match = dfs(board, word, row + 1, col,deep+1,end-1) ||
-                        dfs(board, word, row - 1, col,deep+1,end-1) ||
-                        dfs(board, word, row, col + 1,deep+1,end-1) ||
-                        dfs(board, word, row, col - 1,deep+1,end-1);
-                if (!match) {
-                    board[row][col] = c;
-                }
-                return match;
+                && deep <= word.length() - end + 1 && board[row][col] == word.charAt(end)) {
+            if (end == 0) {
+                return true;
             }
+            //找到目标字符，则返回true，并将当前节点置空，防止重复
+            char c = board[row][col];
+            board[row][col] = ' ';
+            boolean match = dfs(board, word, row + 1, col, deep + 1, end - 1) ||
+                    dfs(board, word, row - 1, col, deep + 1, end - 1) ||
+                    dfs(board, word, row, col + 1, deep + 1, end - 1) ||
+                    dfs(board, word, row, col - 1, deep + 1, end - 1);
+            if (!match) {
+                board[row][col] = c;
+            }
+            return match;
         }
         return false;
     }
