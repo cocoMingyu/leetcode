@@ -36,9 +36,19 @@ public class LetterCombinations {
         return result;
     }
 
+
+    /**
+     * 每次递归处理一个按键对应的数字，拼接上一次的结果
+     * @param digits
+     * @param index
+     * @param sb
+     * @param result
+     */
     public void dfs(String digits, int index, StringBuilder sb, List<String> result) {
+        //index与数字长度一致，说明已经处于递归的最深层，可以添加结果
         if (index == digits.length()) {
-            result.add(sb.toString());
+            if (sb.length()!=0)
+                result.add(sb.toString());
             return;
         }
         //数字对应的字母数组
@@ -47,6 +57,7 @@ public class LetterCombinations {
             String s = str[j];
             sb.append(s);
             dfs(digits, index + 1, sb, result);
+            //重置结果，让上一次的递归结果不影响下一次
             sb.deleteCharAt(sb.length() - 1);
         }
     }
