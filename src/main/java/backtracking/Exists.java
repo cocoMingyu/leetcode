@@ -49,9 +49,9 @@ public class Exists {
     }
 
     public boolean dfs(char[][] board, String word, int row, int col, int deep, int end) {
-        //不能超过边界；在上一个字母附近寻找，深度不能超过2
+        //不能超过边界
         if (row >= 0 && row < board.length && col >= 0 && col < board[row].length
-                && deep <= word.length() - end + 1 && board[row][col] == word.charAt(end)) {
+                && board[row][col] == word.charAt(end)) {
             if (end == 0) {
                 return true;
             }
