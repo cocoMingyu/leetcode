@@ -28,55 +28,37 @@ package search;
  */
 public class SearchRange {
     public int[] searchRange(int[] nums, int target) {
-        int[] res = {-120, -120};
-        if (nums.length > 0){
-            binarySearch(nums, res, target, 0, nums.length - 1);
-        }else {
-            res[0]=-1;
-            res[1]=-1;
+        int[] res = new int[]{-1,-1};
+        int left = binarySearch(nums, target);
+        if (left>=nums.length || nums[left]!=target){
+            return res;
         }
+        res[0] = left;
+        //目标值+1，该值得左边界-1就是target的右边界
+        res[1]= binarySearch(nums,target+1)-1;
         return res;
     }
 
-    public void binarySearch(int[] nums, int[] res, int target, int left, int right) {
-        int index = left + ((right - left) / 2);
-        int num = nums[index];
-
-        if (right - left <= 1) {
-            if (nums[left] == target){
-                res[0] = nums[left] == target ? left : nums[right] == target ? right : -1;
-            }
-            if (nums[right] == target){
-                res[1] = nums[right] == target ? right : nums[left] == target ? left : -1;
-            }
-            return;
-        }
-
-        if (num == target) {
-            //判断左右两侧是否含有相同值，有的话继续搜索
-            if (index - 1 >= 0 && nums[index - 1] == target) {
-                binarySearch(nums, res, target, left, index - 1);
-            } else {
-                res[0] = index;
-            }
-            if (index + 1 <= nums.length - 1 && nums[index + 1] == target) {
-                binarySearch(nums, res, target, index + 1, right);
-            } else {
-                res[1] = index;
+    public int binarySearch(int[] nums, int target) {
+        int left = 0,right = nums.length-1;
+        while (left<=right){
+            int index = left+((right-left)/2);
+            //当前节点大于目标值，右边界向左移动
+            if (nums[index]>=target){
+                right=index-1;
+            }else {
+                //当前节点小于目标值，左边界向右移动
+                left=index+1;
             }
         }
-
-
-        if (num > target) {
-            binarySearch(nums, res, target, left, index);
-        } else {
-            binarySearch(nums, res, target, index, right);
-        }
+        //跳出循环时 left=right+1，nums[left]=nums[right+1]>=target
+        //left是第一个》=target的元素，返回left
+        return left;
     }
 
     public static void main(String[] args) {
-        int[] nums = {5,5,5};
-        int target = 5;
+        int[] nums = {1,2,3,4,4,4};
+        int target = 4;
         int[] ints = new SearchRange().searchRange(nums, target);
         for (int i = 0; i < ints.length; i++) {
             System.out.println(ints[i]);
