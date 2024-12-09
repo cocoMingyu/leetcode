@@ -24,5 +24,6 @@ package stack;
 public class LargestRectangleArea {
     public int largestRectangleArea(int[] heights) {
         //高度上升，获取h（高度取最小值）
+        return 0;
     }
 }
