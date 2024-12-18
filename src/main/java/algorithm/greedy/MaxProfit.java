@@ -30,32 +30,19 @@ import java.util.Arrays;
  */
 public class MaxProfit {
     public int maxProfit(int[] prices) {
-        //第一次迭代，记录每个位置数字对应的最大值
-        int[] copy=prices.clone();
-        Arrays.sort(copy);
-        for (int i = 0; i < copy.length; i++) {
-            int i1 = copy[i];
-            
-        }
-        
-        int max = 0;
-        int minNum = Integer.MAX_VALUE;
+        int min=Integer.MAX_VALUE;
+        int minIndex=0;
         for (int i = 0; i < prices.length; i++) {
-            int price = prices[i];
-            //大于最小值则跳过，利润不会比最小值大
-            if (price>minNum){
-                continue;
-            }
-            minNum= price;
-
-            for(int j=i+1;j<prices.length;j++){
-                if (price>=prices[j]){
-                    continue;
-                }
-                max=Math.max(max,prices[j]-price);
+            if (prices[i]<min){
+                min=prices[i];
+                minIndex=i;
             }
         }
-        return max;
+        int max=Integer.MIN_VALUE;
+        for (int i = minIndex; i < prices.length; i++) {
+            max=Math.max(max,prices[i]);
+        }
+        return max-min;
     }
 
     public static void main(String[] args) {
