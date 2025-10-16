@@ -10,35 +10,54 @@ package algorithm.dp;
  * 输入：[1,2,3,1]
  * 输出：4
  * 解释：偷窃 1 号房屋 (金额 = 1) ，然后偷窃 3 号房屋 (金额 = 3)。
- *      偷窃到的最高金额 = 1 + 3 = 4 。
+ * 偷窃到的最高金额 = 1 + 3 = 4 。
  * 示例 2：
- *
+ * <p>
  * 输入：[2,7,9,3,1]
  * 输出：12
  * 解释：偷窃 1 号房屋 (金额 = 2), 偷窃 3 号房屋 (金额 = 9)，接着偷窃 5 号房屋 (金额 = 1)。
- *      偷窃到的最高金额 = 2 + 9 + 1 = 12 。
-
+ * 偷窃到的最高金额 = 2 + 9 + 1 = 12 。
+ * <p>
  * 提示：
  * 1 <= nums.length <= 100
  * 0 <= nums[i] <= 400
  * @ Date : 2024/12/21 18:47
  */
 public class Rob {
+    /**
+     * 思路：
+     * 1.定义状态 dp[i] 表示偷窃 i 号房屋所得的最高金额
+     * 2.确定状态转移方程
+     *   每个房屋只有两种选择：偷窃或者不偷窃
+     *   dp[i] 不偷时：dp[i] = dp[i-1]
+     *   dp[i] 偷时，i的前一个房屋不能偷：dp[i] = dp[i-2] + nums[i]
+     *   方程：dp[i] = Math.max(dp[i-2] + nums[i], dp[i-1])
+     * 3.初始化和边界条件
+     *
+     * @param nums
+     * @return
+     */
     public int rob(int[] nums) {
-        int first = 0;
-        int two = 0;
-        for (int i = 0; i < nums.length; i++) {
-            if (i%2==0){
-                first+=nums[i];
-            }else {
-                two+=nums[i];
-            }
+        if (nums==null||nums.length==0){
+            return 0;
         }
-        return Math.max(first,two);
+        if (nums.length==1){
+            return nums[0];
+        }
+        //dp[i-1]17549685825175
+        int last1=0;
+        //dp[i-2]
+        int last2=0;
+        for (int i = 0; i < nums.length; i++) {
+            int num = Math.max(last1,last2+nums[i]);
+            last1=num;
+            last2=last1;
+        }
+        return last1;
     }
 
     public static void main(String[] args) {
         Rob rob = new Rob();
-        System.out.println(rob.rob(new int[]{2,1,1,2}));
+        System.out.println(rob.rob(new int[]{2, 1, 1, 3, 10, 1, 15, 30, 12, 15, 35, 30}));
     }
 }
