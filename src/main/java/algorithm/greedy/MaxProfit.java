@@ -30,15 +30,15 @@ import java.util.Arrays;
  */
 public class MaxProfit {
     public int maxProfit(int[] prices) {
-        //最低价格,最大利润
-        int min=Integer.MAX_VALUE, maxProfit=0;
+       int minPrice=Integer.MAX_VALUE,maxProfit=0;
         for (int i = 0; i < prices.length; i++) {
-           if (prices[i]<min){
-               min=Math.min(min,prices[i]);
-           }else {
-               //每次计算当天是否是最大利润
-               maxProfit=Math.max(maxProfit,prices[i]-min);
-           }
+            if (prices[i]<minPrice){
+                //最低价格
+                minPrice=prices[i];
+            }else {
+                //当前价格减去往日最低价格
+                maxProfit=Math.max(maxProfit,prices[i]-minPrice);
+            }
         }
         return maxProfit;
     }

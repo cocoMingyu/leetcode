@@ -26,44 +26,24 @@ import java.util.Map;
  * @ Date : 2024/9/7 14:41
  */
 public class Rotate {
-    public static void test(int[] nums, int k){
-        if (nums.length<=1){
-            return ;
-        }
+    public static void rotate(int[] nums, int k) {
         int[] copy=new int[nums.length];
-        System.arraycopy(nums,0,copy,0,nums.length);
+        if (k%nums.length==0){
+            return;
+        } else if (k>nums.length) {
+            k=k/nums.length;
+        }
 
-        //k大于数组时，k等于数组长度的倍数等于回到起点，所以k=k % nums.length
-        k = k >= nums.length ? k = k % nums.length : k;
-        for (int i = 0; i < nums.length; i++) {
+
+        for (int i = 0; i < copy.length; i++) {
             if (i<k){
-                nums[i]=copy[i+nums.length-k];
+                copy[i]=nums[nums.length-(k-i)];
             }else {
-                nums[i]=copy[i-k];
+                copy[i]=nums[i-k];
             }
         }
-    }
-
-
-    /**
-     * 数组反转
-     * @param nums
-     * @param k
-     */
-    public static void rotate(int[] nums, int k) {
-        k %= nums.length;
-        reverse(nums, 0, nums.length - 1);
-        reverse(nums, 0, k - 1);
-        reverse(nums, k, nums.length - 1);
-    }
-
-    public static void reverse(int[] nums, int start, int end) {
-        while (start < end) {
-            int temp = nums[start];
-            nums[start] = nums[end];
-            nums[end] = temp;
-            start += 1;
-            end -= 1;
+        for (int i = 0; i < copy.length; i++) {
+            nums[i]=copy[i];
         }
     }
 
@@ -73,8 +53,10 @@ public class Rotate {
         int[] nums2 = {-1,-100};
         int[] nums3 = {-1};
         int k = 3;
-        test(nums2, k);
-        test(nums3, k);
+        rotate(nums,k);
+        rotate(nums2,k);
+        rotate(nums3,k);
+        System.out.println(Arrays.toString(nums));
         System.out.println(Arrays.toString(nums2));
         System.out.println(Arrays.toString(nums3));
     }
