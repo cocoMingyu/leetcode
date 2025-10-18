@@ -23,10 +23,12 @@ package algorithm.greedy;
  */
 public class CanJump {
     public boolean canJump(int[] nums) {
-        //当前需要跳的步数
+        //倒序，初始步伐一步
         int step=1;
-        for (int i=nums.length-2;i>=0;i--){
-            if (nums[i]>=step){
+        for (int i = nums.length-2; i >=0; i--) {
+            int num = nums[i];
+            //当索引<step,说明下一次的步伐需要加一
+            if (num>=step){
                 step=1;
             }else {
                 step++;

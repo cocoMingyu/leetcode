@@ -1,8 +1,5 @@
 package algorithm.greedy;
 
-import java.util.LinkedList;
-import java.util.Queue;
-
 /**
  * @ Author : kn
  * @ Description :45. 跳跃游戏 II
@@ -29,7 +26,7 @@ import java.util.Queue;
  * @ Date : 2024/12/20 15:50
  * 2,7,3,1,1,4
  */
-public class Jump2 {
+public class CanJump2 {
     public int jump(int[] nums) {
         int length = nums.length;
         int end = 0;
@@ -51,8 +48,8 @@ public class Jump2 {
     public static void main(String[] args) {
         int[] nums = {2,3,1};
         int[] nums2 = {2,3,1,1,4};
-        Jump2 jump2 = new Jump2();
-        System.out.println(jump2.jump(nums));
-        System.out.println(jump2.jump(nums2));
+        CanJump2 canJump2 = new CanJump2();
+        System.out.println(canJump2.jump(nums));
+        System.out.println(canJump2.jump(nums2));
     }
 }
