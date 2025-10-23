@@ -27,29 +27,24 @@ package algorithm.greedy;
  * 2,7,3,1,1,4
  */
 public class CanJump2 {
-    public int jump(int[] nums) {
-        int length = nums.length;
-        int end = 0;
-        //当前最远能够到达的位置
-        int maxPosition = 0;
-        int steps = 0;
-        for (int i = 0; i < length - 1; i++) {
-            //更新最远能够到达的位置
-            maxPosition = Math.max(maxPosition, i + nums[i]);
-            //如果到达当前最远位置步数加一，更新end
-            if (i == end) {
-                end = maxPosition;
-                steps++;
+    public static int jump(int[] nums) {
+        int step=0;
+        int maxPosition=0;
+        int end=0;
+        for (int i = 0; i < nums.length-1; i++) {
+            int num = nums[i];
+            //当前能到达的最远位置
+            maxPosition=Math.max(maxPosition,i+num);
+            if (i==end){
+                step++;
+                end=maxPosition;
             }
         }
-        return steps;
+        return step;
     }
 
     public static void main(String[] args) {
-        int[] nums = {2,3,1};
-        int[] nums2 = {2,3,1,1,4};
-        CanJump2 canJump2 = new CanJump2();
-        System.out.println(canJump2.jump(nums));
-        System.out.println(canJump2.jump(nums2));
+        System.out.println(jump(new int[]{5,0,0,8,0,0,0,0,0,0,3,0,0,1}));
+        //System.out.println(jump(new int[]{2,3,1,1,4}));
     }
 }

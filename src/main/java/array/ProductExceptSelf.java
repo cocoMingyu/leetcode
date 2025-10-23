@@ -4,7 +4,9 @@ import java.util.Arrays;
 
 /**
  * @ Author : kn
- * @ Description :238. 除自身以外数组的乘积
+ * @ Description :238.
+ *
+ * 除自身以外数组的乘积
  * 给你一个整数数组 nums，返回 数组 answer ，其中 answer[i] 等于 nums 中除 nums[i] 之外其余各元素的乘积 。
  * 题目数据 保证 数组 nums之中任意元素的全部前缀元素和后缀的乘积都在  32 位 整数范围内。
  * 请 不要使用除法，且在 O(n) 时间复杂度内完成此题。
@@ -26,24 +28,16 @@ public class ProductExceptSelf {
      * @return
      */
     public static int[] productExceptSelf(int[] nums) {
-        int r=1;
-        int hasZero=0;
-        for (int i = 0; i < nums.length; i++) {
-            if (nums[i]!=0){
-                r=r*nums[i];
-            }else {
-                hasZero++;
-            }
-        }
-
         int[] result=new int[nums.length];
-        for (int i = 0; i < nums.length; i++) {
-            int num = nums[i];
-            if (num==0){
-                result[i]=hasZero<2?r:0;
-            }else{
-                result[i]=hasZero>0?0:r/num;
-            }
+        //从左向右，每个元素=元素之前的数乘积
+        for (int i = 0; i < result.length; i++) {
+            result[i]=(i==0?nums[i]:result[i-1]*nums[i]);
+        }
+        //从右向左，result【i】=左边乘积*右边乘积
+        int right=1;
+        for (int i = result.length-1; i >=0; i--) {
+            result[i]=i==0?right:result[i-1]*right;
+            right=right*nums[i];
         }
         return result;
     }
@@ -72,10 +66,10 @@ public class ProductExceptSelf {
 
     public static void main(String[] args) {
         System.out.println(Arrays.toString(productExceptSelf(new int[]{1, 2, 3, 4})));
-        System.out.println(Arrays.toString(productExceptSelf2(new int[]{1, 2, 3, 4})));
+        //System.out.println(Arrays.toString(productExceptSelf2(new int[]{1, 2, 3, 4})));
         System.out.println(Arrays.toString(productExceptSelf(new int[]{-1, 1, 0, -3, 3})));
-        System.out.println(Arrays.toString(productExceptSelf2(new int[]{-1, 1, 0, -3, 3})));
+        //System.out.println(Arrays.toString(productExceptSelf2(new int[]{-1, 1, 0, -3, 3})));
         System.out.println(Arrays.toString(productExceptSelf(new int[]{0, 0, 2, 3, 57, 8})));
-        System.out.println(Arrays.toString(productExceptSelf2(new int[]{0, 0, 2, 3, 57, 8})));
+        //System.out.println(Arrays.toString(productExceptSelf2(new int[]{0, 0, 2, 3, 57, 8})));
     }
 }
