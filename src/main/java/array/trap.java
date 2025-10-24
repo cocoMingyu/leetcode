@@ -13,11 +13,13 @@ package array;
  * @ Date : 2024/9/3 20:11
  */
 public class trap {
-
+    //每个位置能接的雨水 = min(左侧最高高度, 右侧最高高度) - 当前高度
+    //如果 min(左高, 右高) ≤ 当前高度 → 该位置无法接水（结果为0）
     public static int trap(int[] height) {
         int resulrt = 0,left=0,right=height.length-1;
         int leftMax=0,rightMax=0;
         while (left<right){
+            //左侧柱子小于右侧柱子，寻找左侧柱子最大值
             if (height[left]<height[right]){
                 leftMax=Math.max(leftMax,height[left]);
                 if (leftMax>height[left]){

@@ -1,5 +1,7 @@
 package array;
 
+import java.util.Arrays;
+
 /**
  * @ Author : kn
  * @ Description :  135. 分发糖果
@@ -39,38 +41,41 @@ package array;
  */
 public class Candy {
     public static int candy(int[] ratings) {
-        if (ratings.length==1){
-            return 1;
-        }
-        int min=Integer.MAX_VALUE;int minIndex=0;
-        for (int i = 0; i < ratings.length; i++) {
-            int rating = ratings[i];
-            if (rating<min){
-                min=rating;
-                minIndex=i;
+        int length = ratings.length;
+        if (length==0) return 0;
+
+        int[] arr = new int[length];
+        //每个人都有一个糖果，初始数组均为一
+        Arrays.fill(arr,1);
+        //从左向右遍历，i>i-1 加一个糖果
+        for (int i = 1; i < length; i++) {
+            if (ratings[i]>ratings[i-1]){
+                arr[i]=arr[i-1]+1;
             }
-        }
-        int right=1,currentRate=1;
-        for (int i = minIndex+1; i < ratings.length; i++) {
-            int cha = ratings[i] - ratings[i - 1];
-            if (cha>0){
-                currentRate=currentRate+1;
-            } else if (cha<0) {
-                currentRate=currentRate-1<2?1:currentRate-1;
-            }
-            right+=currentRate;
         }
 
-        int left=1,leftCurrentRate=1;
-        for (int i = minIndex-1; i >=0; i++) {
-            int cha = ratings[i] - ratings[i - 1];
-            if (cha>0){
-                leftCurrentRate=leftCurrentRate+1;
-            } else if (cha<0) {
-                leftCurrentRate=leftCurrentRate-1<2?1:leftCurrentRate-1;
+        //total从最后一个元素开始
+        int total=arr[length-1];
+        //从右向左遍历,i>i+1 加一个糖果，与arr数组元素对比取最大值
+        for (int i = length-2; i >=0; i--) {
+            if (ratings[i]>ratings[i+1]){
+                arr[i]=Math.max(arr[i],arr[i+1]+1);
             }
-            left+=leftCurrentRate;
+            total+=arr[i];
         }
-        return left+right;
+        return total;
+    }
+
+    public static void main(String[] args) {
+        //1,2,3,4,1=11
+        System.out.println(candy(new int[]{1,3,4,5,2}));
+        //1,2,3,3,2,1=12
+        System.out.println(candy(new int[]{29,51,87,87,72,12}));
+        //1,3,2,2,1=9
+        System.out.println(candy(new int[]{1,3,2,2,1}));
+        //2,1,2=5
+        System.out.println(candy(new int[]{1,0,2}));
+        //1,2,1=4
+        System.out.println(candy(new int[]{1,2,2}));
     }
 }
