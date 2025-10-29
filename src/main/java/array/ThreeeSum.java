@@ -47,29 +47,40 @@ public class ThreeeSum {
     public static List<List<Integer>> threeSum(int[] nums) {
         //排序，左右两边分别向中间移动
         Arrays.sort(nums);
-        Set<List<Integer>> res = new HashSet<>();
-        int l = 0, r = nums.length - 1;
+        List<List<Integer>> res = new ArrayList<>();
         //确定第一个数x ,求两数之和为-x
         for (int i = 0; i < nums.length; i++) {
-            int num = nums[i];
-            while (l < r && l != i && r != i) {
-                if (nums[l] + nums[r] < -num) {
+            //第一个数字去重
+            if (i>0&&nums[i-1]==nums[i]){
+                continue;
+            }
+            //数组以排序，第一位大于0，后续不可能相加等于零
+            if (nums[i]>0){
+                break;
+            }
+
+            int l = i+1, r = nums.length - 1;
+            while (l < r) {
+                int sum = nums[i] + nums[l] + nums[r];
+                if (sum<0) {
                     l++;
-                } else if (nums[l] + nums[r] > -num) {
+                } else if (sum>0) {
                     r--;
                 } else {
-                    res.add(Arrays.asList(num, nums[l], nums[r]));
+                    res.add(Arrays.asList(nums[i], nums[l], nums[r]));
+                    //去重,控制不产生重复三元组，第一位数字确定nums[i]，nums[l]!=nums[l+1] 相等的话会产生重复数据
+                    while (l<r&&nums[l]==nums[l+1]) l++;
+                    while (l<r&&nums[r]==nums[r-1]) r--;
                     l++;
                     r--;
                 }
             }
-            l = 0;
-            r = nums.length - 1;
         }
-        return new ArrayList<>(res);
+        return res;
     }
 
     public static void main(String[] args) {
+        System.out.println(threeSum(new int[]{1,1,1,-2}));
         System.out.println(threeSum(new int[]{-100, -70, -60, 110, 120, 130, 160}));
         System.out.println(threeSum(new int[]{0, 0, 0, 0}));
         System.out.println(threeSum(new int[]{-1, 0, 1, 2, -1, -4}));
