@@ -45,12 +45,12 @@ public class MinSubArrayLen {
     public static int minSubArrayLen(int target, int[] nums) {
         int res=Integer.MAX_VALUE;
         int left=0;
-        int total=nums[left];
-        for (int right = 1; right < nums.length; right++) {
+        int total=0;
+        for (int right = 0; right < nums.length; right++) {
              total+=nums[right];
-            if (total>=target){
+            while (total>=target){
                 total-=nums[left];
-                res=Math.min(res,right-left);
+                res=Math.min(res,right-left+1);
                 //大于target，移动左边界，寻找下一个窗口
                 left++;
             }
@@ -59,7 +59,7 @@ public class MinSubArrayLen {
     }
 
     public static void main(String[] args) {
-/*        System.out.println(minSubArrayLen(213,new int[]{12,28,83,4,25,26,25,2,25,25,25,12}));*/
+        System.out.println(minSubArrayLen(213,new int[]{12,28,83,4,25,26,25,2,25,25,25,12}));
         System.out.println(minSubArrayLen(7,new int[]{2,3,1,2,4,3}));
         System.out.println(minSubArrayLen(4,new int[]{1,4,4}));
         System.out.println(minSubArrayLen(11,new int[]{1,1,1,1,1,1,1,1}));
